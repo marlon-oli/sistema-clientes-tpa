@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.util.Comparator;
 
 public class ClienteGUI2 extends JFrame {
     private JTable table;
@@ -32,9 +33,9 @@ public class ClienteGUI2 extends JFrame {
         int retorno = fileChooser.showOpenDialog(this);
         if (retorno == JFileChooser.APPROVE_OPTION) {
             arquivoSelecionado = fileChooser.getSelectedFile().getAbsolutePath();
-            bufferDeClientes.associaBuffer(new ArquivoCliente()); // Substitua por sua implementação
-            bufferDeClientes.inicializaBuffer("leitura", arquivoSelecionado); // Passa o nome do arquivo aqui
-            registrosCarregados = 0; // Reseta o contador
+            bufferDeClientes.associaBuffer(new ArquivoCliente());
+            bufferDeClientes.inicializaBuffer("leitura", arquivoSelecionado);
+            registrosCarregados = 0;
             tableModel.setRowCount(0); // Limpa a tabela
             carregarMaisClientes(); // Carrega os primeiros clientes
             arquivoCarregado = true; // Marca que o arquivo foi carregado
@@ -43,6 +44,7 @@ public class ClienteGUI2 extends JFrame {
     private void criarInterface() {
         JPanel panel = new JPanel(new BorderLayout());
         JButton btnCarregar = new JButton("Carregar Clientes");
+        JButton btnOrdenar = new JButton("Ordenar Alfabeticamente");
         tableModel = new DefaultTableModel(new String[]{"#", "Nome", "Sobrenome", "Telefone", "Endereço", "Credit Score"}, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
@@ -70,8 +72,24 @@ public class ClienteGUI2 extends JFrame {
             }
         });
 
+        btnOrdenar.addActionListener(e -> {
+            if (!arquivoCarregado) {
+                JOptionPane.showMessageDialog(this, "Nenhum arquivo foi carregado ainda.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            OrdenadorExterno.ordenarArquivo(arquivoSelecionado, Comparator.comparing(Cliente::getNome));
+
+            bufferDeClientes.fechaBuffer();
+            bufferDeClientes.associaBuffer(new ArquivoCliente());
+            bufferDeClientes.inicializaBuffer("leitura", arquivoSelecionado);
+            tableModel.setRowCount(0); // Limpa a tabela
+            carregarMaisClientes(); // Carrega os clientes ordenados
+        });
+
         panel.add(btnCarregar, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(btnOrdenar, BorderLayout.SOUTH);
         add(panel);
     }
 

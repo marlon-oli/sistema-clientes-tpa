@@ -12,6 +12,7 @@ public class Cliente implements Serializable {
     private String endereco;
     private String telefone;
     private int creditScore; // Valor entre 0 e 100
+    private boolean ativo = true;
 
     // Construtor da classe
     public Cliente(String nome, String sobrenome, String endereco, String telefone, int creditScore) {
@@ -64,6 +65,14 @@ public class Cliente implements Serializable {
             throw new IllegalArgumentException("Credit score deve ser entre 0 e 100.");
         }
         this.creditScore = creditScore;
+    }
+
+    public void marcarComoExcluido() {
+        this.ativo = false;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
     }
 
     // Método para exibir as informações do cliente

@@ -102,6 +102,15 @@ public class BufferDeClientes implements Buffer<Cliente> {
         }
     }
 
+
+    public void inserirCliente(Cliente cliente) {
+        if (modo.equals("escrita")) {
+            adicionaAoBuffer(cliente);
+        } else {
+            throw new IllegalStateException("Buffer não está em modo de escrita!");
+        }
+    }
+
     // Lê o próximo cliente do buffer (modo leitura)
     public Cliente proximoCliente() {
         if (!modo.equals("leitura")) {
@@ -140,4 +149,17 @@ public class BufferDeClientes implements Buffer<Cliente> {
 	    return Arrays.copyOf(clientes, i);
 	}
 
+    public Cliente buscarPorNome(String nome) {
+        if (!modo.equals("leitura")) {
+            throw new IllegalStateException("Buffer não está em modo de leitura!");
+        }
+
+        Cliente cliente;
+        while ((cliente = proximoCliente()) != null) {
+            if (cliente.getNome().equalsIgnoreCase(nome)) {
+                return cliente;
+            }
+        }
+        return null;
+    }
 }
