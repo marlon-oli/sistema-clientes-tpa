@@ -1,0 +1,15 @@
+entity\cms\BufferDeClientes.class
+entity\cms\TesteBufferClientes.class
+entity\cms\Buffer.class
+entity\cms\ClienteGUI2$1.class
+entity\cms\ClienteGUI$2.class
+entity\cms\ClienteGUI$1.class
+entity\cms\ClienteGUI2.class
+entity\cms\Cliente.class
+entity\cms\TabHashClientes.class
+entity\cms\ClienteGUI.class
+entity\cms\ArquivoSequencial.class
+entity\cms\OrdenadorExterno.class
+entity\cms\ClienteGUI2$2.class
+entity\cms\ArquivoCliente.class
+entity\cms\GeradorDeArquivosDeClientes.class
